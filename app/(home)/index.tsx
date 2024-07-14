@@ -5,6 +5,8 @@ import { Link } from "expo-router";
 import { Text, View, Button } from "react-native";
 import { SafeAreaView } from "react-native";
 import { useClerk } from "@clerk/clerk-expo";
+import StartScreen from "@/components/StartScreen";
+import LottieView from "lottie-react-native";
 
 export default function Page() {
   const { user } = useUser();
@@ -16,14 +18,10 @@ export default function Page() {
         <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
         <Text>Welcome to your app!</Text>
         <Button title="Sign Out" onPress={() => signOut()} />
+        <Link href={"/music-player"}>music page</Link>
       </SignedIn>
       <SignedOut>
-        <Link href="/sign-in">
-          <Text>Sign In</Text>
-        </Link>
-        <Link href="/sign-up">
-          <Text>Sign Up</Text>
-        </Link>
+        <StartScreen />
       </SignedOut>
     </SafeAreaView>
   );
