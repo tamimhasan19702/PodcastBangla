@@ -4,22 +4,24 @@ import React from "react";
 import { Link } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import LottieView from "lottie-react-native";
+import SignInPodCast from "./signIn";
 
 function StartScreen() {
   return (
     <View
+      // @ts-ignore
       style={{
-        justifyContent: "center",
+        justifyContent: "start",
         alignItems: "center",
         height: "100%",
-        padding: 20,
+        padding: 10,
         gap: 30,
       }}>
       <LottieView
         source={require("@/assets/animations/man.json")}
         autoPlay
         loop
-        style={{ width: 400, height: 400 }}
+        style={{ width: 250, height: 250, marginTop: 50 }}
       />
       <Text
         style={{
@@ -30,32 +32,7 @@ function StartScreen() {
         }}>
         Welcome To Podcast Bangla
       </Text>
-
-      <View style={{ flexDirection: "row", gap: 15 }}>
-        <Link
-          href="/sign-in"
-          style={{
-            paddingVertical: 10,
-            backgroundColor: "blue",
-            paddingHorizontal: 50,
-            borderRadius: 20,
-            elevation: 5,
-          }}>
-          <Text style={{ color: "white" }}>Sign In</Text>
-        </Link>
-
-        <Link
-          href="/sign-up"
-          style={{
-            paddingVertical: 10,
-            backgroundColor: "blue",
-            paddingHorizontal: 50,
-            borderRadius: 20,
-            elevation: 5,
-          }}>
-          <Text style={{ color: "white" }}>Sign Up</Text>
-        </Link>
-      </View>
+      <SignInPodCast />
     </View>
   );
 }

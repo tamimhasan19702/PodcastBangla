@@ -1,9 +1,10 @@
 /** @format */
 
 import * as React from "react";
-import { TextInput, Button, View } from "react-native";
+import { TextInput, Button, View, Text } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
-import { useRouter } from "expo-router";
+import { useRouter, Link } from "expo-router";
+import { isClerkAPIResponseError } from "@clerk/clerk-expo";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -29,8 +30,6 @@ export default function SignUpScreen() {
 
       setPendingVerification(true);
     } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
     }
   };
@@ -87,6 +86,12 @@ export default function SignUpScreen() {
           <Button title="Verify Email" onPress={onPressVerify} />
         </>
       )}
+      <View>
+        <Text>Don't have an account?</Text>
+        <Link href="/">
+          <Text>Sign In</Text>
+        </Link>
+      </View>
     </View>
   );
 }
