@@ -2,11 +2,12 @@
 
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
-import { Text, View, Button, KeyboardAvoidingView } from "react-native";
+import { Text, Button, KeyboardAvoidingView } from "react-native";
 import { SafeAreaView } from "react-native";
 import { useClerk } from "@clerk/clerk-expo";
 import StartScreen from "@/components/StartScreen";
 import LottieView from "lottie-react-native";
+import { Platform } from "react-native";
 
 export default function Page() {
   const { user } = useUser();
@@ -16,7 +17,7 @@ export default function Page() {
     <SafeAreaView>
       <KeyboardAvoidingView
         style={{ height: "100%", width: "100%" }}
-        behavior="padding">
+        behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <SignedIn>
           <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
           <Text>Welcome to your app!</Text>
