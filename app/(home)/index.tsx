@@ -14,10 +14,11 @@ export default function Page() {
   const { signOut } = useClerk();
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
-        style={{ height: "100%", width: "100%" }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}>
         <SignedIn>
           <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
           <Text>Welcome to your app!</Text>

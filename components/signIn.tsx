@@ -7,8 +7,7 @@ import React from "react";
 import { TextInput, Snackbar, Button } from "react-native-paper";
 import { isClerkAPIResponseError } from "@clerk/clerk-expo";
 import { Colors } from "@/constants/Colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { useColorScheme } from "../hooks/useColorScheme.web";
+import * as WebBrowser from "expo-web-browser";
 
 export default function SignInPodCast() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -18,7 +17,7 @@ export default function SignInPodCast() {
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
 
-  const [visible, setVisible] = React.useState(true);
+  const [visible, setVisible] = React.useState(false);
 
   const onSignInPress = React.useCallback(
     //  @ts-ignore
@@ -96,6 +95,22 @@ export default function SignInPodCast() {
           backgroundColor: Colors.primary.darkBlue,
         }}>
         Sign In
+      </Button>
+
+      <Button
+        onPress={async () => {
+          await WebBrowser.openBrowserAsync(
+            "https://easy-muskox-52.accounts.dev/sign-in"
+          );
+        }}
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 10,
+        }}>
+        <Text style={{ color: Colors.primary.darkBlue }}>
+          Sign in with Google
+        </Text>
       </Button>
 
       <View
