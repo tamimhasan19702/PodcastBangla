@@ -3,7 +3,7 @@ import { useUser } from "@clerk/clerk-expo";
 
 import { Button, View, Text } from "react-native";
 
-export default function Page() {
+export default function Profile() {
   const { user } = useUser();
 
   return (

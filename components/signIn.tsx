@@ -17,8 +17,6 @@ export default function SignInPodCast() {
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
 
-  const [visible, setVisible] = React.useState(false);
-
   const onSignInPress = React.useCallback(
     //  @ts-ignore
     async (e) => {
@@ -41,22 +39,29 @@ export default function SignInPodCast() {
           router.replace("/");
         } else {
           setError("An error occurred during sign in. Please try again.");
-          setVisible(true);
+          Alert.alert(
+            "Error",
+            "An error occurred during sign in. Please try again."
+          );
         }
       } catch (err) {
         if (isClerkAPIResponseError(err)) {
           setError(err.message);
-          setVisible(true);
         } else {
           setError("An unexpected error occurred. Please try again.");
-          setVisible(true);
+          Alert.alert(
+            "Error",
+            "An unexpected error occurred. Please try again."
+          );
         }
       }
     },
     [isLoaded, emailAddress, password, signIn, setActive, router]
   );
 
-  const onDismissSnackBar = () => setVisible(false);
+  const onSignUpPress = () => {
+    router.push("/sign-up");
+  };
 
   return (
     <View
@@ -97,22 +102,6 @@ export default function SignInPodCast() {
         Sign In
       </Button>
 
-      <Button
-        onPress={async () => {
-          await WebBrowser.openBrowserAsync(
-            "https://easy-muskox-52.accounts.dev/sign-in"
-          );
-        }}
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: 10,
-        }}>
-        <Text style={{ color: Colors.primary.darkBlue }}>
-          Sign in with Google
-        </Text>
-      </Button>
-
       <View
         style={{
           flexDirection: "row",
@@ -122,29 +111,12 @@ export default function SignInPodCast() {
           justifyContent: "center",
         }}>
         <Text style={{ fontSize: 16 }}>Don't have an account?</Text>
-        <Link
-          href="/sign-up"
+        <Text
+          onPress={onSignUpPress}
           style={{ fontSize: 16, color: Colors.primary.darkBlue }}>
           <Text>Sign up</Text>
-        </Link>
+        </Text>
       </View>
-
-      <Snackbar
-        style={{
-          position: "absolute",
-          bottom: 0,
-          width: "100%",
-          backgroundColor: Colors.primary.gold,
-        }}
-        visible={visible}
-        onDismiss={onDismissSnackBar}
-        action={{
-          label: "Undo",
-          onPress: () => {},
-        }}
-        duration={10000}>
-        {error}
-      </Snackbar>
     </View>
   );
 }

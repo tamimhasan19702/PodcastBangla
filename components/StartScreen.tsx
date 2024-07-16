@@ -31,7 +31,7 @@ function StartScreen() {
           fontWeight: "bold",
           color: Colors.primary.darkBlue,
         }}>
-        Welcome To Podcast Bangla
+        Sign in To Podcast Bangla
       </Text>
       <SignInPodCast />
     </View>
