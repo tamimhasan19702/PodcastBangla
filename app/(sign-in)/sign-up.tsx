@@ -1,7 +1,14 @@
 /** @format */
 
 import * as React from "react";
-import { View, Text, KeyboardAvoidingView, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  ScrollView,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter, Link } from "expo-router";
 import { TextInput, Button } from "react-native-paper";
@@ -17,6 +24,7 @@ export default function SignUpScreen() {
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const onSignUpPress = async () => {
     if (!isLoaded) {
@@ -24,10 +32,11 @@ export default function SignUpScreen() {
     }
 
     if (password !== confirmPassword) {
-      // @ts-ignore
       Alert.alert("Error", "Passwords do not match");
       return;
     }
+
+    setLoading(true);
 
     try {
       await signUp.create({
@@ -39,7 +48,12 @@ export default function SignUpScreen() {
 
       setPendingVerification(true);
     } catch (err: any) {
+      const errorMessage =
+        err.errors?.[0]?.message || "Something went wrong. Please try again.";
+      Alert.alert("Error", errorMessage);
       console.error(JSON.stringify(err, null, 2));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,6 +61,8 @@ export default function SignUpScreen() {
     if (!isLoaded) {
       return;
     }
+
+    setLoading(true);
 
     try {
       const completeSignUp = await signUp.attemptEmailAddressVerification({
@@ -60,9 +76,12 @@ export default function SignUpScreen() {
         console.error(JSON.stringify(completeSignUp, null, 2));
       }
     } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
+      const errorMessage =
+        err.errors?.[0]?.message || "Something went wrong. Please try again.";
+      Alert.alert("Error", errorMessage);
+      console.error(JSON.stringify(err.errors, null, 2));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -85,6 +104,7 @@ export default function SignUpScreen() {
             loop
             style={{ width: 330, height: 330, marginTop: 50 }}
           />
+
           <Text
             style={{
               fontSize: 30,
@@ -147,7 +167,14 @@ export default function SignUpScreen() {
                   backgroundColor: Colors.primary.darkBlue,
                   marginTop: 10,
                 }}>
-                Sign Up
+                {loading ? (
+                  <ActivityIndicator
+                    animating={true}
+                    color={Colors.primary.white}
+                  />
+                ) : (
+                  "Sign Up"
+                )}
               </Button>
             </View>
           )}
@@ -174,7 +201,14 @@ export default function SignUpScreen() {
                   backgroundColor: Colors.primary.darkBlue,
                   marginTop: 10,
                 }}>
-                Verify Email
+                {loading ? (
+                  <ActivityIndicator
+                    animating={true}
+                    color={Colors.primary.white}
+                  />
+                ) : (
+                  "Verify Email"
+                )}
               </Button>
             </View>
           )}
