@@ -1,8 +1,9 @@
 /** @format */
 
 import * as SecureStore from "expo-secure-store";
-import { Slot } from "expo-router";
-import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
+import { Slot, useRouter } from "expo-router";
+import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo";
+import { useEffect } from "react";
 
 export interface TokenCache {
   getToken: (key: string) => Promise<string | undefined | null>;
@@ -42,11 +43,32 @@ if (!publishableKey) {
     "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
   );
 }
+
+function InitialLayout() {
+  const { isSignedIn, isLoaded } = useAuth();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    if (isSignedIn) {
+      console.log("User is signed in");
+      router.replace("/home");
+    } else {
+      console.log("User is not signed in");
+      router.replace("/sign-in");
+    }
+  }, [isLoaded, isSignedIn]);
+
+  return <Slot />;
+}
+
 export default function RootLayout() {
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
-        <Slot />
+        <InitialLayout />
       </ClerkLoaded>
     </ClerkProvider>
   );

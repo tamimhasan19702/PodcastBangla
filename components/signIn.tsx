@@ -27,7 +27,7 @@ export default function SignInPodCast() {
   const [password, setPassword] = useState("");
   const [error, setError] = React.useState("");
   const [loading, setLoading] = useState(false);
-  const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+  const googleOAuth = useOAuth({ strategy: "oauth_google" });
 
   const onSignInPress = useCallback(
     //  @ts-ignore
@@ -79,28 +79,29 @@ export default function SignInPodCast() {
     router.push("/sign-up");
   };
 
-  const onGoogleSignInPress = useCallback(async () => {
+  async function onGoogleSignIn() {
     try {
-      const { createdSessionId, signIn } = await startOAuthFlow();
+      setLoading(true);
 
-      if (signIn?.status === "complete") {
-        // @ts-ignore
-        await setActive({ session: createdSessionId });
-        router.replace("/");
+      const oAuthFlow = await googleOAuth.startOAuthFlow();
+
+      if (oAuthFlow.authSessionResult?.type === "success") {
+        if (oAuthFlow.setActive) {
+          await oAuthFlow.setActive({
+            session: oAuthFlow.createdSessionId,
+          });
+        }
       } else {
-        Alert.alert(
-          "Error",
-          "Google sign-in was not successful. Please try again."
-        );
+        setLoading(false);
+        setError("An unexpected error occurred. Please try again.");
+        Alert.alert(error);
       }
-    } catch (err) {
-      let errorMessage = "An unexpected error occurred. Please try again.";
-      if (isClerkAPIResponseError(err)) {
-        errorMessage = err.message;
-      }
-      Alert.alert("Error", errorMessage);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setError("An unexpected error occurred. Please try again.");
     }
-  }, [startOAuthFlow, setActive, router]);
+  }
 
   useEffect(() => {
     WebBrowser.warmUpAsync();
@@ -154,26 +155,23 @@ export default function SignInPodCast() {
         )}
       </Button>
 
-      <TouchableOpacity
-        onPress={onGoogleSignInPress}
-        disabled={loading}
-        style={{
-          width: "100%",
-          paddingVertical: 3,
-          color: Colors.light.text,
-          marginTop: 10,
-          alignItems: "center",
-        }}>
-        <Text>
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <AntDesign name="google" size={18} color="black">
-              Sign in with Google
-            </AntDesign>
-          )}
-        </Text>
-      </TouchableOpacity>
+      <View style={{ width: "100%", marginTop: 10 }}>
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <TouchableOpacity
+            onPress={onGoogleSignIn}
+            style={{
+              flexDirection: "row",
+              gap: 10,
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+            <AntDesign name="google" size={22} color="black" />
+            <Text style={{ fontSize: 18 }}>Sign in with Google</Text>
+          </TouchableOpacity>
+        )}
+      </View>
 
       <View
         style={{
