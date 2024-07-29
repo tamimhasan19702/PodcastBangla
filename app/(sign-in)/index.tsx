@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "../(screens)/HomeScreen";
 import MusicScreen from "../(screens)/MusicScreen";
+import AccountScreen from "../(screens)/AccountScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +22,8 @@ export default function Page() {
         <NavigationContainer independent={true}>
           <Tab.Navigator screenOptions={{ headerShown: false }}>
             <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Settings" component={MusicScreen} />
+            <Tab.Screen name="Music" component={MusicScreen} />
+            <Tab.Screen name="Account" component={AccountScreen} />
           </Tab.Navigator>
         </NavigationContainer>
       </SignedIn>
