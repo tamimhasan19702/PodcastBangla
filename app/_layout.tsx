@@ -54,10 +54,10 @@ function InitialLayout() {
 
     if (isSignedIn) {
       console.log("User is signed in");
-      router.replace("/home");
+      router.replace("/");
     } else {
       console.log("User is not signed in");
-      router.replace("/sign-in");
+      router.replace("/");
     }
   }, [isLoaded, isSignedIn]);
 
