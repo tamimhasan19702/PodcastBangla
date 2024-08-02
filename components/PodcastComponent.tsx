@@ -1,7 +1,8 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export type PodcastComponentProp = {
   audioUrl: string;
@@ -20,10 +21,23 @@ function PodcastComponent({
   date,
   duration,
 }: PodcastComponentProp) {
-  console.log(image);
+  const [isPlayed, setIsPlayed] = useState(false);
+
+  const handlePlayPause = () => {
+    setIsPlayed(!isPlayed);
+    // Add logic to play/pause the audio
+  };
+
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 10,
+        width: "auto",
+      }}>
       {/* Image */}
+
       <Image
         source={{ uri: image }}
         style={{
@@ -34,7 +48,6 @@ function PodcastComponent({
         }}
       />
 
-      {/* Content */}
       <View style={{ flex: 1 }}>
         <Text style={{ fontSize: 16, fontWeight: "bold" }}>{authorName}</Text>
         <Text style={{ fontSize: 14, color: "#666" }}>{description}</Text>
@@ -43,9 +56,15 @@ function PodcastComponent({
         </Text>
       </View>
 
+      {/* Content */}
+
       {/* Play Button */}
-      <TouchableOpacity style={{ marginLeft: 10 }}>
-        <Text style={{ fontSize: 24, color: "#333" }}>▶️</Text>
+      <TouchableOpacity style={{ marginLeft: 10 }} onPress={handlePlayPause}>
+        <FontAwesome
+          name={isPlayed ? "pause" : "play"}
+          size={24}
+          color="black"
+        />
       </TouchableOpacity>
     </View>
   );
