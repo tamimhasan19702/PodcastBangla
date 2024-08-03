@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
 
 export type PodcastComponentProp = {
   audioUrl: string;
@@ -22,10 +23,15 @@ function PodcastComponent({
   duration,
 }: PodcastComponentProp) {
   const [isPlayed, setIsPlayed] = useState(false);
+  const navigation = useNavigation();
 
   const handlePlayPause = () => {
     setIsPlayed(!isPlayed);
     // Add logic to play/pause the audio
+  };
+
+  const handleTextPress = () => {
+    navigation.navigate("MusicPopup");
   };
 
   return (
@@ -48,13 +54,13 @@ function PodcastComponent({
         }}
       />
 
-      <View style={{ flex: 1 }}>
+      <TouchableOpacity style={{ flex: 1 }} onPress={handleTextPress}>
         <Text style={{ fontSize: 16, fontWeight: "bold" }}>{authorName}</Text>
         <Text style={{ fontSize: 14, color: "#666" }}>{description}</Text>
         <Text style={{ fontSize: 12, color: "#999" }}>
           {date} • {duration}
         </Text>
-      </View>
+      </TouchableOpacity>
 
       {/* Content */}
 
