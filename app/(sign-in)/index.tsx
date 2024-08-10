@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator();
 
 export default function Page() {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#212121" }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <SignedIn>
         <NavigationContainer independent={true}>
           <Tab.Navigator
