@@ -4,6 +4,7 @@ import React from "react";
 import { ScrollView, Text, View } from "react-native";
 import { PodcastData } from "@/assets/podcast";
 import PodcastComponent from "@/components/PodcastComponent";
+import Modal from "react-native-modal";
 
 function HomeScreen() {
   return (

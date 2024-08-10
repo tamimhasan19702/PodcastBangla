@@ -30,5 +30,6 @@ export const Colors = {
     darkBlue: "#083c5d",
     dark: "#1d2731",
     white: "#fff",
+    pink: "#FF6464",
   },
 };

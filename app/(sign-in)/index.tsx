@@ -1,9 +1,7 @@
 /** @format */
 
 import { SignedIn, SignedOut } from "@clerk/clerk-expo";
-import { Button, View, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native";
-import { useClerk } from "@clerk/clerk-expo";
 import StartScreen from "@/components/StartScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -11,12 +9,11 @@ import HomeScreen from "../(screens)/(Home)/HomeScreen";
 import MusicScreen from "../(screens)/(Music)/MusicScreen";
 import AccountScreen from "../(screens)/(Account)/AccountScreen";
 import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
 
 const Tab = createBottomTabNavigator();
 
 export default function Page() {
-  const { signOut } = useClerk();
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#212121" }}>
       <SignedIn>
@@ -24,7 +21,12 @@ export default function Page() {
           <Tab.Navigator
             screenOptions={{
               headerShown: false,
-              tabBarStyle: { backgroundColor: "#212121" },
+              tabBarStyle: {
+                backgroundColor: Colors.primary.pink,
+                paddingTop: 5, // Add top padding
+                paddingBottom: 5, // Add bottom padding
+                height: 70, // Increase height to accommodate padding
+              },
               tabBarActiveTintColor: "#fff",
               tabBarInactiveTintColor: "#ccc",
             }}>
@@ -33,16 +35,16 @@ export default function Page() {
               component={HomeScreen}
               options={{
                 tabBarIcon: ({ color }) => (
-                  <Ionicons name="home" size={24} color={color} />
+                  <Ionicons name="home" size={30} color={color} />
                 ),
               }}
             />
             <Tab.Screen
-              name="Music"
+              name="Favorites"
               component={MusicScreen}
               options={{
                 tabBarIcon: ({ color }) => (
-                  <Ionicons name="musical-notes" size={24} color={color} />
+                  <Ionicons name="heart" size={30} color={color} />
                 ),
               }}
             />
@@ -51,8 +53,17 @@ export default function Page() {
               component={AccountScreen}
               options={{
                 tabBarIcon: ({ color }) => (
-                  <Ionicons name="person" size={24} color={color} />
+                  <Ionicons name="person" size={30} color={color} />
                 ),
+              }}
+            />
+            <Tab.Screen
+              name="MusicPopup"
+              component={MusicScreen}
+              options={{
+                tabBarButton: () => null,
+                // @ts-ignore
+                tabBarVisible: false,
               }}
             />
           </Tab.Navigator>

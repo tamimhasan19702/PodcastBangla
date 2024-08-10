@@ -76,6 +76,7 @@ function InitialLayout() {
 export default function RootLayout() {
   return (
     // @ts-ignore
+
     <ClerkProvider tokenCache={tokenCache} publishableKey={PUBLISHABLE_KEY}>
       <ClerkLoaded>
         <InitialLayout />
