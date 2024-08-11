@@ -9,6 +9,13 @@ import Modal from "react-native-modal";
 function HomeScreen() {
   return (
     <View style={{ padding: 15 }}>
+      <Text style={{ fontSize: 20, fontWeight: 500, padding: 10 }}>
+        New Releases
+      </Text>
+
+      <Text style={{ fontSize: 20, fontWeight: 500, padding: 10 }}>
+        All Podcasts
+      </Text>
       <ScrollView>
         {PodcastData.map((item) => (
           <PodcastComponent

@@ -9,7 +9,7 @@ import { Colors } from "@/constants/Colors";
 import Slider from "@react-native-community/slider";
 import { Audio } from "expo-av";
 
-export type PodcastComponentProp = {
+export type NewPodcastComponentProp = {
   audioUrl: string;
   authorName: string;
   description: string;
@@ -18,14 +18,14 @@ export type PodcastComponentProp = {
   duration: string;
 };
 
-function PodcastComponent({
+function NewPodcastComponent({
   audioUrl,
   authorName,
   description,
   image,
   date,
   duration,
-}: PodcastComponentProp) {
+}: NewPodcastComponentProp) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -267,4 +267,4 @@ function PodcastComponent({
   );
 }
 
-export default PodcastComponent;
+export default NewPodcastComponent;
