@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { Text, View, Image, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Modal from "react-native-modal";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
@@ -81,7 +80,6 @@ function NewPodcastComponent({
         } else {
           await sound.playAsync();
         }
-        // The playback status should automatically update via `setOnPlaybackStatusUpdate`
       }
     } catch (error) {
       console.error("Error handling playback:", error);
@@ -104,10 +102,12 @@ function NewPodcastComponent({
 
   return (
     <>
-      <Pressable onPress={handlePlayerPress}>
+      <Pressable
+        onPress={handlePlayerPress}
+        style={{ width: 300, height: 410 }}>
         <View
           style={{
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
             padding: 20,
             backgroundColor: isPlaying
@@ -120,44 +120,47 @@ function NewPodcastComponent({
             shadowRadius: 10,
             shadowOffset: { width: 0, height: 5 },
             elevation: 5,
+            width: "90%",
+            gap: 5,
           }}>
           <Image
             source={{ uri: image }}
             style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              marginRight: 10,
+              width: 100,
+              height: 100,
+              borderRadius: 10, // Adjust for rounded corners like the album image
+              marginBottom: 10,
             }}
           />
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "bold",
-                color: isPlaying ? Colors.primary.white : Colors.primary.dark,
-              }}>
-              {authorName}
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                color: isPlaying ? Colors.primary.white : Colors.primary.dark,
-              }}>
-              {description}
-            </Text>
-            <Text
-              style={{
-                fontSize: 12,
-                color: isPlaying ? Colors.primary.white : Colors.primary.dark,
-              }}>
-              {date} • {duration}
-            </Text>
-          </View>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              color: isPlaying ? Colors.primary.white : Colors.primary.dark,
+              textAlign: "center",
+            }}>
+            {authorName}
+          </Text>
+          <Text
+            style={{
+              fontSize: 15,
+              color: isPlaying ? Colors.primary.white : Colors.primary.dark,
+              textAlign: "center",
+            }}>
+            {description}
+          </Text>
+          <Text
+            style={{
+              fontSize: 10,
+              color: isPlaying ? Colors.primary.white : Colors.primary.dark,
+              textAlign: "center",
+            }}>
+            {date} • {duration}
+          </Text>
           <Pressable onPress={togglePlayPause}>
             <FontAwesome
               name={isPlaying ? "pause-circle" : "play-circle"}
-              size={30}
+              size={40}
               color={isPlaying ? Colors.primary.white : Colors.primary.pink}
             />
           </Pressable>
@@ -186,9 +189,9 @@ function NewPodcastComponent({
             <Image
               source={{ uri: image }}
               style={{
-                width: 100,
-                height: 100,
                 borderRadius: 20,
+                width: 250,
+                height: 250,
               }}
             />
             <Pressable onPress={togglePlayPause}>

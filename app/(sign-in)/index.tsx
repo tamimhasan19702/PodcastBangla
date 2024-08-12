@@ -10,6 +10,7 @@ import MusicScreen from "../(screens)/(Music)/MusicScreen";
 import AccountScreen from "../(screens)/(Account)/AccountScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+import SearchScreen from "../(screens)/(search)/SearchScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,6 +37,15 @@ export default function Page() {
               options={{
                 tabBarIcon: ({ color }) => (
                   <Ionicons name="home" size={30} color={color} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Search"
+              component={SearchScreen}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <Ionicons name="search" size={30} color={color} />
                 ),
               }}
             />

@@ -186,9 +186,9 @@ function PodcastComponent({
             <Image
               source={{ uri: image }}
               style={{
-                width: 100,
-                height: 100,
                 borderRadius: 20,
+                width: 250,
+                height: 250,
               }}
             />
             <Pressable onPress={togglePlayPause}>
