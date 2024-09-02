@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { Text, View, Image, Pressable } from "react-native";
+import { Text, View, Image, Pressable, Animated, Easing } from "react-native";
 import Modal from "react-native-modal";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
@@ -31,6 +31,28 @@ function NewPodcastComponent({
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [currentTime, setCurrentTime] = useState("0:00");
   const [totalDuration, setTotalDuration] = useState("0:00");
+
+  const translateYAnim = useState(new Animated.Value(800))[0]; // Start with modal off-screen
+
+  useEffect(() => {
+    if (isModalVisible) {
+      // Animate the modal up to 20% from the bottom
+      Animated.timing(translateYAnim, {
+        toValue: 0, // Modal will slide to visible position
+        duration: 500,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    } else {
+      // Animate the modal down to hide it
+      Animated.timing(translateYAnim, {
+        toValue: 1000, // Modal will slide back down off-screen
+        duration: 500,
+        easing: Easing.in(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isModalVisible]);
 
   useEffect(() => {
     if (sound) {
@@ -104,7 +126,7 @@ function NewPodcastComponent({
     <>
       <Pressable
         onPress={handlePlayerPress}
-        style={{ width: 300, height: 410 }}>
+        style={{ width: 300, height: 420 }}>
         <View
           style={{
             flexDirection: "column",
@@ -170,20 +192,22 @@ function NewPodcastComponent({
       <Modal
         isVisible={isModalVisible}
         backdropOpacity={0.3}
-        style={{ justifyContent: "center", alignItems: "center", margin: 0 }}
+        style={{ justifyContent: "flex-end", margin: 0 }}
         onBackdropPress={handlePlayerPress}
         onBackButtonPress={handlePlayerPress}>
-        <View
+        <Animated.View
           style={{
             backgroundColor: "white",
-            borderRadius: 30,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
             padding: 20,
             alignItems: "center",
-            width: "90%",
+            width: "100%",
             shadowColor: "#000",
             shadowOpacity: 0.1,
             shadowRadius: 10,
             shadowOffset: { width: 0, height: 5 },
+            transform: [{ translateY: translateYAnim }],
           }}>
           <View style={{ position: "relative", marginBottom: 20 }}>
             <Image
@@ -264,7 +288,7 @@ function NewPodcastComponent({
               color={Colors.primary.pink}
             />
           </Pressable>
-        </View>
+        </Animated.View>
       </Modal>
     </>
   );

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { Text, View, Image, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Modal from "react-native-modal";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
@@ -81,7 +80,6 @@ function PodcastComponent({
         } else {
           await sound.playAsync();
         }
-        // The playback status should automatically update via `setOnPlaybackStatusUpdate`
       }
     } catch (error) {
       console.error("Error handling playback:", error);
@@ -166,17 +164,24 @@ function PodcastComponent({
 
       <Modal
         isVisible={isModalVisible}
-        backdropOpacity={0.3}
-        style={{ justifyContent: "center", alignItems: "center", margin: 0 }}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        backdropOpacity={0.4}
+        style={{
+          justifyContent: "flex-end",
+          margin: 0,
+        }}
         onBackdropPress={handlePlayerPress}
         onBackButtonPress={handlePlayerPress}>
         <View
           style={{
             backgroundColor: "white",
-            borderRadius: 30,
+            borderRadius: 10,
             padding: 20,
             alignItems: "center",
-            width: "90%",
+            justifyContent: "center",
+            width: "100%",
+            height: "80%",
             shadowColor: "#000",
             shadowOpacity: 0.1,
             shadowRadius: 10,

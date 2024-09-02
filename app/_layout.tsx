@@ -5,6 +5,7 @@ import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo";
 import { useEffect } from "react";
 import { useRouter } from "expo-router";
 import { Slot } from "expo-router";
+import { PodcastPlayerProvider } from "@/context/PodcastContext";
 
 // Define a constant for the publishable key
 const PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -79,7 +80,9 @@ export default function RootLayout() {
 
     <ClerkProvider tokenCache={tokenCache} publishableKey={PUBLISHABLE_KEY}>
       <ClerkLoaded>
-        <InitialLayout />
+        <PodcastPlayerProvider>
+          <InitialLayout />
+        </PodcastPlayerProvider>
       </ClerkLoaded>
     </ClerkProvider>
   );

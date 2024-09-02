@@ -10,9 +10,13 @@ import NewPodcastComponent from "@/components/NewPodCastComponent";
 function HomeScreen() {
   return (
     <View style={{ padding: 15 }}>
-      <Text style={{ fontSize: 20, fontWeight: 500, padding: 10 }}>
-        New Releases
-      </Text>
+      <View>
+        <Text style={{ fontSize: 20, fontWeight: 500, padding: 10 }}>
+          New Releases
+        </Text>
+        <Text>Currently Playing</Text>
+      </View>
+
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {PodcastData.map((item) => (
           <NewPodcastComponent
