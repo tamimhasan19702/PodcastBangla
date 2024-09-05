@@ -1,7 +1,7 @@
 /** @format */
 
 import { SignedIn, SignedOut } from "@clerk/clerk-expo";
-import { SafeAreaView, View, Text } from "react-native";
+import { SafeAreaView, Pressable, Text } from "react-native";
 import StartScreen from "@/components/StartScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -11,7 +11,8 @@ import AccountScreen from "../(screens)/(Account)/AccountScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import SearchScreen from "../(screens)/(search)/SearchScreen";
-import MarqueeLabel from "react-native-marquee-label";
+import MarqueeView from "react-native-marquee-view";
+import Modal from "react-native-modal";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +21,7 @@ export default function Page() {
     <SafeAreaView style={{ flex: 1 }}>
       <SignedIn>
         {/* Add a floating action button with absolute position at the top */}
-        <View
+        <Pressable
           style={{
             position: "absolute",
             top: 15,
@@ -33,22 +34,19 @@ export default function Page() {
             shadowColor: "#000",
             shadowOpacity: 0.1,
             flexDirection: "row",
-            gap: 15,
+            gap: 5,
             alignItems: "center",
             justifyContent: "center",
-          }}>
-          <Ionicons
-            name="play"
-            size={20}
-            color="white"
-            style={{
-              borderRadius: 50, // Make the icon round
-            }}
-          />
-          <Text style={{ fontSize: 12, color: "#fff", marginTop: 5 }}>
-            Song name i dont know
-          </Text>
-        </View>
+          }}
+          onPress={() => console.log("tamim")}>
+          <Ionicons name="play" size={20} color="white" />
+          <MarqueeView>
+            <Text style={{ fontSize: 12, color: "#fff", marginTop: 2 }}>
+              Song name i dont know
+            </Text>
+          </MarqueeView>
+        </Pressable>
+
         <NavigationContainer independent={true}>
           <Tab.Navigator
             screenOptions={{
