@@ -15,7 +15,6 @@ function HomeScreen() {
         <Text style={{ fontSize: 20, fontWeight: 500, padding: 10 }}>
           New Releases
         </Text>
-        <Text>Currently Playing</Text>
       </View>
 
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -24,6 +23,7 @@ function HomeScreen() {
             audioUrl={item.audio_url}
             key={item.author_name}>
             <NewPodcastComponent
+              audioUrl={item.audio_url}
               date={item.date}
               authorName={item.author_name}
               description={item.description}
@@ -37,7 +37,7 @@ function HomeScreen() {
       <Text style={{ fontSize: 20, fontWeight: 500, padding: 10 }}>
         All Podcasts
       </Text>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
         {PodcastData.map((item) => (
           <PodcastPlayerProvider
             audioUrl={item.audio_url}

@@ -2,7 +2,6 @@
 
 import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { PodcastProvider } from "@/context/PodcastContext";
 
 export default function Layout() {
   return (
