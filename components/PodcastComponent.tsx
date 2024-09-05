@@ -1,12 +1,13 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Text, View, Image, Pressable } from "react-native";
 import Modal from "react-native-modal";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import Slider from "@react-native-community/slider";
 import { Audio } from "expo-av";
+import { usePodcastPlayer } from "@/context/PodcastContext";
 
 export type PodcastComponentProp = {
   audioUrl: string;
@@ -25,79 +26,20 @@ function PodcastComponent({
   date,
   duration,
 }: PodcastComponentProp) {
+  const {
+    isPlaying,
+    progress,
+    currentTime,
+    totalDuration,
+    togglePlayPause,
+    handleProgressChange,
+    sound,
+  } = usePodcastPlayer();
+
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
-  const [currentTime, setCurrentTime] = useState("0:00");
-  const [totalDuration, setTotalDuration] = useState("0:00");
-
-  useEffect(() => {
-    if (sound) {
-      sound.setOnPlaybackStatusUpdate((status) => {
-        if (status.isLoaded) {
-          // @ts-ignore
-          setProgress(status.positionMillis / status.durationMillis);
-          setCurrentTime(formatTime(status.positionMillis));
-          // @ts-ignore
-          setTotalDuration(formatTime(status.durationMillis));
-          setIsPlaying(status.isPlaying);
-        }
-      });
-    }
-
-    return sound
-      ? () => {
-          sound.unloadAsync().catch((error) => {
-            console.error("Error unloading sound:", error);
-          });
-        }
-      : undefined;
-  }, [sound]);
-
-  const formatTime = (milliseconds: number) => {
-    const minutes = Math.floor(milliseconds / 60000);
-    const seconds = Math.floor((milliseconds % 60000) / 1000);
-    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
-  };
 
   const handlePlayerPress = () => {
     setIsModalVisible(!isModalVisible);
-  };
-
-  const togglePlayPause = async () => {
-    try {
-      if (sound === null) {
-        const { sound: newSound } = await Audio.Sound.createAsync(
-          { uri: audioUrl },
-          { shouldPlay: true }
-        );
-        setSound(newSound);
-        setIsPlaying(true);
-      } else {
-        if (isPlaying) {
-          await sound.pauseAsync();
-        } else {
-          await sound.playAsync();
-        }
-      }
-    } catch (error) {
-      console.error("Error handling playback:", error);
-    }
-  };
-
-  const handleProgressChange = async (value: number) => {
-    try {
-      if (sound !== null) {
-        const status = await sound.getStatusAsync();
-        if (status.isLoaded && status.durationMillis) {
-          const newPosition = value * status.durationMillis;
-          await sound.setPositionAsync(newPosition);
-        }
-      }
-    } catch (error) {
-      console.error("Error changing progress:", error);
-    }
   };
 
   return (

@@ -2,33 +2,41 @@
 
 // src/context/PodcastPlayerContext.tsx
 
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { Audio } from "expo-av";
 
-// Define the context's data structure
 interface PodcastPlayerContextProps {
   isPlaying: boolean;
   progress: number;
   currentTime: string;
   totalDuration: string;
-  togglePlayPause: (audioUrl: string) => void;
+  togglePlayPause: () => void;
   handleProgressChange: (value: number) => void;
   sound: Audio.Sound | null;
 }
 
-// Define the props for the provider, including children
 interface PodcastPlayerProviderProps {
   children: React.ReactNode;
+  audioUrl: string;
 }
 
-// Create the context with default values
 const PodcastPlayerContext = createContext<
   PodcastPlayerContextProps | undefined
 >(undefined);
 
-// Create the context provider component
-export const PodcastPlayerProvider: React.FC<PodcastPlayerProviderProps> = ({
+const usePodcastPlayer = () => {
+  const context = React.useContext(PodcastPlayerContext);
+  if (!context) {
+    throw new Error(
+      "usePodcastPlayer must be used within a PodcastPlayerProvider"
+    );
+  }
+  return context;
+};
+
+const PodcastPlayerProvider: React.FC<PodcastPlayerProviderProps> = ({
   children,
+  audioUrl,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -40,10 +48,8 @@ export const PodcastPlayerProvider: React.FC<PodcastPlayerProviderProps> = ({
     if (sound) {
       sound.setOnPlaybackStatusUpdate((status) => {
         if (status.isLoaded) {
-          // @ts-ignore
           setProgress(status.positionMillis / status.durationMillis);
           setCurrentTime(formatTime(status.positionMillis));
-          // @ts-ignore
           setTotalDuration(formatTime(status.durationMillis));
           setIsPlaying(status.isPlaying);
         }
@@ -65,7 +71,7 @@ export const PodcastPlayerProvider: React.FC<PodcastPlayerProviderProps> = ({
     return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
   };
 
-  const togglePlayPause = async (audioUrl: string) => {
+  const togglePlayPause = async () => {
     try {
       if (sound === null) {
         const { sound: newSound } = await Audio.Sound.createAsync(
@@ -116,13 +122,4 @@ export const PodcastPlayerProvider: React.FC<PodcastPlayerProviderProps> = ({
   );
 };
 
-// Create a custom hook for easier context access
-export const usePodcastPlayer = () => {
-  const context = useContext(PodcastPlayerContext);
-  if (!context) {
-    throw new Error(
-      "usePodcastPlayer must be used within a PodcastPlayerProvider"
-    );
-  }
-  return context;
-};
+export { PodcastPlayerProvider, usePodcastPlayer };
